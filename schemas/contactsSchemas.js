@@ -8,7 +8,7 @@ export const createContactSchema = Joi.object({
       tlds: { allow: ["com", "net", "ua"] },
     })
     .required(),
-  phone: Joi.string().min(7).max(12).required(),
+  phone: Joi.number(),
 });
 
 export const updateContactSchema = Joi.object({
@@ -17,7 +17,5 @@ export const updateContactSchema = Joi.object({
     minDomainSegments: 2,
     tlds: { allow: ["com", "net", "ua"] },
   }),
-  phone: Joi.string().min(7).max(12),
-})
-  .min(1)
-  .message("Body must have at least one field");
+  phone: Joi.number(),
+});

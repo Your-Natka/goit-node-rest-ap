@@ -31,9 +31,9 @@ export async function removeContact(contactId) {
 export async function addContact(name, email, phone) {
   const contacts = await listContacts();
   const newContact = {
-    name: name,
-    email: email,
-    phone: phone,
+    name,
+    email,
+    phone,
     id: uuidv4(),
   };
 
