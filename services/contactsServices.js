@@ -5,10 +5,13 @@ import { v4 as uuidv4 } from "uuid";
 const contactsPath = path.join("db", "contacts.json");
 
 export async function listContacts() {
-  const result = await fs.readFile(contactsPath);
-  return JSON.parse(result);
+  try {
+    const result = await fs.readFile(contactsPath);
+    return JSON.parse(result);
+  } catch (error) {
+    console.log(error);
+  }
 }
-
 export async function getContactById(contactId) {
   const contacts = await listContacts();
   const res = contacts.find((contact) => contact.id === contactId);
@@ -42,7 +45,7 @@ export async function addContact(name, email, phone) {
   return newContact;
 }
 
-export async function updateContact(id, body) {
+export async function updateOneContact(id, body) {
   const contacts = await listContacts();
 
   const index = contacts.findIndex((contact) => contact.id === id);
