@@ -56,7 +56,7 @@ export const updateContact = async (req, res, next) => {
   const { id } = req.params;
   const { name, email, phone } = req.body;
   try {
-    const update = await updateOneContact(id, name, email, phone);
+    const update = await updateOneContact(id, req.body);
     if (!update) {
       throw HttpError(404, "Not found");
     }
