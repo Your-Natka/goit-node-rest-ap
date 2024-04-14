@@ -10,7 +10,7 @@ import HttpError from "../helpers/HttpError.js";
 export const getAllContacts = async (_, res, next) => {
   try {
     const result = await listContacts();
-    res.status(200).json([result]);
+    res.status(200).json(result);
   } catch (error) {
     next(error);
   }
@@ -30,8 +30,8 @@ export const getOneContact = async (req, res, next) => {
 };
 
 export const deleteContact = async (req, res, next) => {
-  const { id } = req.params;
   try {
+    const { id } = req.params;
     const result = await removeContact(id);
     if (!result) {
       throw HttpError(404, "Not found");
@@ -46,7 +46,7 @@ export const createContact = async (req, res, next) => {
   const { name, email, phone } = req.body;
   try {
     const result = await addContact(name, email, phone);
-    res.status(200).json(result);
+    res.status(201).json(result);
   } catch (error) {
     next(error);
   }
