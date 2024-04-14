@@ -46,14 +46,20 @@ export async function addContact(name, email, phone) {
 }
 
 export async function updateOneContact(id, body) {
-  const contacts = await listContacts();
+  try {
+    const contacts = await listContacts();
 
-  const index = contacts.findIndex((contact) => contact.id === id);
+    const index = contacts.findIndex((contact) => contact.id === id);
 
-  if (index === -1) return null;
+    if (index === -1) {
+      return null;
+    }
 
-  contacts[index] = { ...contacts[index], ...body };
-  await fs.writeFile(contactsPath, JSON.stringify(contacts));
+    contacts[index] = { ...contacts[index], ...body };
+    await fs.writeFile(contactsPath, JSON.stringify(contacts));
 
-  return contacts[index];
+    return contacts[index];
+  } catch (err) {
+    console.log(err);
+  }
 }
