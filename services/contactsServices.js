@@ -33,12 +33,7 @@ export async function removeContact(contactId) {
 
 export async function addContact(name, email, phone) {
   const contacts = await listContacts();
-  const newContact = {
-    name,
-    email,
-    phone,
-    id: uuidv4(),
-  };
+  const newContact = { id: uuidv4(), name: name, email, phone };
 
   contacts.push(newContact);
   await fs.writeFile(contactsPath, JSON.stringify(contacts));
