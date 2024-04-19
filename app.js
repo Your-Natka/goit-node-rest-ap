@@ -14,7 +14,6 @@ mongoose.set("strictQuery", true);
 mongoose
   .connect(process.env.NODE_MONGOOSE)
   .then(() => {
-    app.listen(PORT);
     console.log("Database connection successful.");
     console.log(`port: ${PORT}`);
   })
