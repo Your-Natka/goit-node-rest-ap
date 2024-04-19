@@ -9,10 +9,10 @@ import contactsRouter from "./routes/contactsRouter.js";
 dotenv.config();
 
 const app = express();
-const { NODE_MONGOOSE, PORT = 3000 } = process.env;
+const { NODE_MONGOOSE, PORT } = process.env;
 mongoose.set("strictQuery", true);
 mongoose
-  .connect(process.env.NODE_MONGOOSE)
+  .connect(NODE_MONGOOSE)
   .then(() => {
     console.log("Database connection successful.");
     console.log(`port: ${PORT}`);
