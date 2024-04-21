@@ -1,4 +1,4 @@
-import { Contact } from "../models/contactModals.js";
+import { Contact } from "../models/contactsModals.js";
 import HttpError from "../helpers/HttpError.js";
 import catchAsync from "../helpers/catchAsync.js";
 

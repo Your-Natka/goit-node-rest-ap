@@ -68,7 +68,7 @@ export const getCurrent = async (req, res, next) => {
 export const logoutUser = async (req, res, next) => {
   try {
     const { _id } = req.user;
-    await userServices.setToken(_id);
+    await userServices.saveToken(_id);
 
     res.json({
       message: "Logout success",

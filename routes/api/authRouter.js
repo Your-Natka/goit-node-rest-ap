@@ -3,8 +3,8 @@ import validateBody from "../middlewares/validateBody.js";
 import {
   registerUser,
   loginUser,
-  logoutUser,
   getCurrent,
+  logoutUser,
 } from "../../controllers/userController.js";
 import { registerSchema, loginSchema } from "../schemas/userSchemas.js";
 import { authorize } from "../middlewares/authorize.js";
