@@ -4,12 +4,15 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
-import { contactsRouter, authRouter } from "./routes/contactsRouter.js";
+import contactsRouter from "./routes/api/contactsRouter.js";
+import authRouter from "./routes/api/authRouter.js";
 
 dotenv.config();
 
 const app = express();
+
 const { NODE_MONGOOSE, PORT } = process.env;
+
 mongoose.set("strictQuery", true);
 mongoose
   .connect(NODE_MONGOOSE)
@@ -25,9 +28,8 @@ mongoose
 app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
-app.use(express.static("public"));
 
-app.use("/user", authRouter);
+app.use("/api/users", authRouter);
 app.use("/api/contacts", contactsRouter);
 
 app.use((_, res) => {
