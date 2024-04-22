@@ -3,3 +3,4 @@ export const userSubscription = {
   STARTER: "starter",
   BUSINESS: "business",
 };
+export const DEV = "development";
