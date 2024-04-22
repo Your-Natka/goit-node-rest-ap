@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import handleMongooseError from "../helpers/handleMongooseError.js";
+import { constRoles } from "../constants/userRoles.js";
 
 const userSchema = new Schema(
   {
@@ -15,7 +16,7 @@ const userSchema = new Schema(
     subscription: {
       type: String,
       enum: ["starter", "pro", "business"],
-      default: "starter",
+      default: constRoles.STARTER,
     },
     token: String,
     default: null,
