@@ -1,8 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
-import { HttpError } from "../helpers/HttpError.js";
-import { User } from "../models/user";
+import HttpError from "../helpers/HttpError.js";
+import { User } from "../models/user.js";
 
 const { SECRET_KEY } = process.env;
 
@@ -43,20 +42,31 @@ export const logout = async (req, res) => {
   res.status(204).json();
 };
 
-export const register = async (req, res) => {
-  const { email, password } = req.body;
+export const register = async (req, res, next) => {
+  const { email, password, subscription } = req.body;
   const user = await User.findOne({ email });
+  try {
+    const user = await User.findOne({ email });
+    if (user) throw HttpError(409, "Email in use");
 
-  if (user) throw HttpError(409, "Email in use");
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash(password, salt);
 
-  const hashPass = await bcrypt.hash(password, 10);
-  const newUser = await User.create({ ...req.body, password: hashPass });
-  res.status(201).json({
-    user: {
-      email: newUser.email,
-      subscription: newUser.subscription,
-    },
-  });
+    const newUser = await User.create({
+      email,
+      password: passwordHash,
+      subscription,
+    });
+
+    res.status(201).json({
+      user: {
+        email: newUser.email,
+        subscription: newUser.subscription,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const updateSubscription = async (req, res) => {

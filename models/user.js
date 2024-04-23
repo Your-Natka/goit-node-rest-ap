@@ -36,8 +36,6 @@ const userSchema = new Schema(
 
 userSchema.post("save", handleMongooseError);
 
-export const User = model("user", userSchema);
-
 const registerSchema = Joi.object({
   email: Joi.string().pattern(EMAIL_REGEX).required().messages({
     "string.pattern.base":
@@ -71,4 +69,4 @@ export const userSchemas = {
   updSubscriptionSchema,
 };
 
-export default { User, userSchemas };
+export const User = model("user", userSchema);
