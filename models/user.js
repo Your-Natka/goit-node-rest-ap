@@ -63,10 +63,4 @@ export const updSubscriptionSchema = Joi.object({
   subscription: Joi.string().required(),
 });
 
-export const userSchemas = {
-  registerSchema,
-  loginSchema,
-  updSubscriptionSchema,
-};
-
 export const User = model("user", userSchema);
