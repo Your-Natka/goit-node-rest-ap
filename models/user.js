@@ -8,7 +8,7 @@ const EMAIL_REGEX =
 const PASS_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
 const SUBSCRIPTIONS = ["starter", "pro", "business"];
 
-const userSchema = new Schema(
+export const userSchema = new Schema(
   {
     email: {
       type: String,
@@ -36,7 +36,7 @@ const userSchema = new Schema(
 
 userSchema.post("save", handleMongooseError);
 
-const registerSchema = Joi.object({
+export const registerSchema = Joi.object({
   email: Joi.string().pattern(EMAIL_REGEX).required().messages({
     "string.pattern.base":
       "Email may contain letters, numbers, an apostrophe, and must be followed by '@' domain name '.' domain suffix. For example Taras@ukr.ua, adrian@gmail.com, JacobM3rcer@hotmail.com",
@@ -48,7 +48,7 @@ const registerSchema = Joi.object({
   subscription: Joi.string(),
 });
 
-const loginSchema = Joi.object({
+export const loginSchema = Joi.object({
   email: Joi.string().pattern(EMAIL_REGEX).required().messages({
     "string.pattern.base":
       "Email may contain letters, numbers, an apostrophe, and must be followed by '@' domain name '.' domain suffix. For example Taras@ukr.ua, adrian@gmail.com, JacobM3rcer@hotmail.com",
@@ -59,7 +59,7 @@ const loginSchema = Joi.object({
   }),
 });
 
-const updSubscriptionSchema = Joi.object({
+export const updSubscriptionSchema = Joi.object({
   subscription: Joi.string().required(),
 });
 

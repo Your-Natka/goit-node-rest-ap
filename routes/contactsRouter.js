@@ -2,7 +2,7 @@ import express from "express";
 import { authenticate } from "../middlewares/authenticate.js";
 import { validateBody } from "../middlewares/validateBody.js";
 import { isValidId } from "../middlewares/isValidId.js";
-import { schemas } from "../models/contactModals.js";
+import { addSchema, updFavoriteSchema } from "../models/contactModals.js";
 import {
   listContacts,
   getById,
@@ -20,18 +20,13 @@ contactsRouter.get("/:contactId", authenticate, isValidId, getById);
 
 contactsRouter.delete("/:contactId", authenticate, isValidId, removeContact);
 
-contactsRouter.post(
-  "/",
-  authenticate,
-  validateBody(schemas.addSchema),
-  addContact
-);
+contactsRouter.post("/", authenticate, validateBody(addSchema), addContact);
 
 contactsRouter.put(
   "/:contactId",
   authenticate,
   isValidId,
-  validateBody(schemas.addSchema),
+  validateBody(addSchema),
   updateContact
 );
 
@@ -39,7 +34,7 @@ contactsRouter.patch(
   "/:contactId/favorite",
   authenticate,
   isValidId,
-  validateBody(schemas.updFavoriteSchema),
+  validateBody(updFavoriteSchema),
   updateFavorite
 );
 
