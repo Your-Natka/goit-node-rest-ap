@@ -1,8 +1,8 @@
 import express from "express";
-import { authenticate } from "../../middlewares/authenticate.js";
-import { validateBody } from "../../middlewares/validateBody.js";
-import { isValidId } from "../../middlewares/isValidId.js";
-import { schemas } from "../../models/contactModals.js";
+import { authenticate } from "../middlewares/authenticate.js";
+import { validateBody } from "../middlewares/validateBody.js";
+import { isValidId } from "../middlewares/isValidId.js";
+import { schemas } from "../models/contactModals.js";
 import {
   listContacts,
   getById,
@@ -10,7 +10,7 @@ import {
   addContact,
   updateContact,
   updateFavorite,
-} from "../../controllers/contactsController.js";
+} from "../controllers/contactsController.js";
 
 const contactsRouter = express.Router();
 

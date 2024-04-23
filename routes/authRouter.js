@@ -1,14 +1,14 @@
 import express from "express";
-import { validateBody } from "../../middlewares/validateBody.js";
-import { authenticate } from "../../middlewares/authenticate.js";
-import { userSchemas } from "../../models/user.js";
+import { validateBody } from "../middlewares/validateBody.js";
+import { authenticate } from "../middlewares/authenticate.js";
+import { userSchemas } from "../models/user.js";
 import {
   register,
   login,
   logout,
   getCurrent,
   updateSubscription,
-} from "../../controllers/authController.js";
+} from "../controllers/authController.js";
 
 const router = express.Router();
 const authRouter = express.Router();
