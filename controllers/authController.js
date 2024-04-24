@@ -2,7 +2,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import HttpError from "../helpers/HttpError.js";
 import { User } from "../models/user.js";
-
 const { SECRET_KEY } = process.env;
 
 export const register = async (req, res, next) => {
