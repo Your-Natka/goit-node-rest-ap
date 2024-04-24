@@ -1,5 +1,5 @@
 import express from "express";
-import { validateBody } from "../middlewares/validateBody.js";
+import validateBody from "../middlewares/validateBody.js";
 import { authenticate } from "../middlewares/authenticate.js";
 import {
   registerSchema,
@@ -14,18 +14,17 @@ import {
   updateSubscription,
 } from "../controllers/authController.js";
 
-const router = express.Router();
 const authRouter = express.Router();
 
-router.post("/register", validateBody(registerSchema), register);
+authRouter.post("/register", validateBody(registerSchema), register);
 
-router.post("/login", validateBody(loginSchema), login);
+authRouter.post("/login", validateBody(loginSchema), login);
 
-router.post("/logout", authenticate, logout);
+authRouter.post("/logout", authenticate, logout);
 
-router.get("/current", authenticate, getCurrent);
+authRouter.get("/current", authenticate, getCurrent);
 
-router.patch(
+authRouter.patch(
   "/",
   authenticate,
   validateBody(updSubscriptionSchema),

@@ -18,7 +18,7 @@ export const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: [true, "Set password for user"],
+      required: [true, "Password is required"],
     },
     subscription: {
       type: String,
@@ -63,4 +63,5 @@ export const updSubscriptionSchema = Joi.object({
   subscription: Joi.string().required(),
 });
 
+userSchema.post("save", handleMongooseError);
 export const User = model("user", userSchema);
