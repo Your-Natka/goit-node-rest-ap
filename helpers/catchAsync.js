@@ -1,7 +1,9 @@
-export const catchAsync = (fn) => async (req, res, next) => {
+export const catchAsync = (func) => async (req, res, next) => {
   try {
     await func(req, res, next);
   } catch (error) {
     next(error);
   }
 };
+
+export default catchAsync;
