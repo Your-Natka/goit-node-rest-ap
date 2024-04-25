@@ -1,7 +1,8 @@
 import { Schema, model } from "mongoose";
 import handleMongooseError from "../helpers/handleMongooseError.js";
+import Joi from "joi";
 
-const contactSchema = new Schema(
+export const contactSchema = new Schema(
   {
     name: {
       type: String,
@@ -26,6 +27,16 @@ const contactSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-contactSchema.post("save", handleMongooseError);
+export const addSchema = Joi.object({
+  name: Joi.string().required(),
+  email: Joi.string(),
+  phone: Joi.string(),
+  favorite: Joi.boolean(),
+});
 
-export const Contact = model("contact", contactSchema);
+export const updFavoriteSchema = Joi.object({
+  favorite: Joi.boolean().required(),
+});
+
+contactSchema.post("save", handleMongooseError);
+export const Contact = model("contacts", contactSchema);
