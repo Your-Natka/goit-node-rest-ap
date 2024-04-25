@@ -13,7 +13,6 @@ import {
   getCurrent,
   updateSubscription,
 } from "../controllers/authController.js";
-import catchAsync from "../helpers/catchAsync.js";
 
 const authRouter = express.Router();
 
@@ -21,15 +20,15 @@ authRouter.post("/register", validateBody(registerSchema), register);
 
 authRouter.post("/login", validateBody(loginSchema), login);
 
-authRouter.post("/logout", authenticate, catchAsync(logout));
+authRouter.post("/logout", authenticate, logout);
 
-authRouter.get("/current", authenticate, catchAsync(getCurrent));
+authRouter.get("/current", authenticate, getCurrent);
 
 authRouter.patch(
   "/",
   authenticate,
   validateBody(updSubscriptionSchema),
-  catchAsync(updateSubscription)
+  updateSubscription
 );
 
 export default authRouter;
