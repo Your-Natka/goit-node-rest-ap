@@ -30,8 +30,8 @@ export const contactSchema = new Schema(
 
 export const addSchema = Joi.object({
   name: Joi.string().required(),
-  email: Joi.string(),
-  phone: Joi.string(),
+  email: Joi.string().required(),
+  phone: Joi.string().required(),
   favorite: Joi.boolean(),
 });
 
@@ -41,8 +41,3 @@ export const updFavoriteSchema = Joi.object({
 
 contactSchema.post("save", handleMongooseError);
 export const Contact = model("contacts", contactSchema);
-
-export const schemas = {
-  addSchema,
-  updFavoriteSchema,
-};

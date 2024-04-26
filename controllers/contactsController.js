@@ -2,8 +2,8 @@ import { Contact } from "../models/contactModals.js";
 import HttpError from "../helpers/HttpError.js";
 
 export const addContact = async (req, res) => {
-  const { _id: owner } = req.user;
-  const result = await Contact.create({ ...req.body, owner });
+  const { _id } = req.user;
+  const result = await Contact.create({ ...req.body, owner: _id });
 
   res.status(201).json(result);
 };
@@ -17,24 +17,8 @@ export const getById = async (req, res) => {
 };
 
 export const listContacts = async (req, res) => {
-  const { _id: owner } = req.user;
-  const searchParams = {
-    owner,
-  };
-
-  const { page = 1, limit = 20, favorite } = req.query;
-  const skip = (page - 1) * limit;
-
-  if (typeof favorite === "undefined") {
-    delete searchParams.favorite;
-  } else {
-    searchParams.favorite = favorite;
-  }
-
-  const result = await Contact.find(searchParams, "-createdAt -updatedAt", {
-    skip,
-    limit,
-  }).populate("owner", "email");
+  const { _id } = req.user;
+  const result = await Contact.find({ owner: _id });
   res.json(result);
 };
 
