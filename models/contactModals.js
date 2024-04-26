@@ -1,4 +1,4 @@
-import { Schema, model, Types } from "mongoose";
+import { Schema, model } from "mongoose";
 import handleMongooseError from "../helpers/handleMongooseError.js";
 import Joi from "joi";
 
@@ -20,7 +20,7 @@ export const contactSchema = new Schema(
       default: false,
     },
     owner: {
-      type: Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
@@ -40,4 +40,9 @@ export const updFavoriteSchema = Joi.object({
 });
 
 contactSchema.post("save", handleMongooseError);
-export const Contacts = model("contacts", contactSchema);
+export const Contact = model("contacts", contactSchema);
+
+export const schemas = {
+  addSchema,
+  updFavoriteSchema,
+};
