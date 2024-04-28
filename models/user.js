@@ -34,8 +34,6 @@ export const userSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-userSchema.post("save", handleMongooseError);
-
 export const registerSchema = Joi.object({
   email: Joi.string().pattern(EMAIL_REGEX).required().messages({
     "string.pattern.base":
@@ -64,4 +62,5 @@ export const updSubscriptionSchema = Joi.object({
 });
 
 userSchema.post("save", handleMongooseError);
+
 export const User = model("user", userSchema);

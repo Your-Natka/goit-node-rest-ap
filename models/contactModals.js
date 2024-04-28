@@ -21,7 +21,8 @@ export const contactSchema = new Schema(
     },
     owner: {
       type: Schema.Types.ObjectId,
-      ref: "user",
+      ref: "User",
+      required: true,
     },
   },
   { versionKey: false, timestamps: true }
@@ -29,8 +30,8 @@ export const contactSchema = new Schema(
 
 export const addSchema = Joi.object({
   name: Joi.string().required(),
-  email: Joi.string(),
-  phone: Joi.string(),
+  email: Joi.string().required(),
+  phone: Joi.string().required(),
   favorite: Joi.boolean(),
 });
 
