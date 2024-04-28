@@ -25,7 +25,7 @@ export const listContacts = catchAcync(async (req, res) => {
 
 export const removeContact = catchAcync(async (req, res) => {
   const { contactId } = req.params;
-  const result = await Contact.findOneAndDelete({ _id: id, owner: req.user._id });
+  const result = await Contact.findOneAndDelete({ _id: contactId, owner: req.user._id });
   console.log(result);
   if (!result) {
     throw HttpError(404, 'Not found');
@@ -36,7 +36,7 @@ export const removeContact = catchAcync(async (req, res) => {
 export const updateContact = catchAcync(async (req, res) => {
   const { contactId } = req.params;
   const { _id: owner } = req.user;
-  const result = await Contact.findOneAndUpdate({ _id: id, owner: req.user._id });
+  const result = await Contact.findOneAndUpdate({ _id: contactId, owner });
   if (!result) throw HttpError(404, 'Not found');
 
   res.status(201).json(result);
@@ -45,7 +45,7 @@ export const updateContact = catchAcync(async (req, res) => {
 export const updateFavorite = catchAcync(async (req, res) => {
   const { contactId } = req.params;
   if (!req.body) throw HttpError(400, 'missing field favorite');
-  const result = await Contact.findByIdAndUpdate({ _id: id, owner: req.user._id });
+  const result = await Contact.findByIdAndUpdate({ _id: contactId, owner });
   if (!result) throw HttpError(404, 'Not found');
 
   res.status(201).json(result);
