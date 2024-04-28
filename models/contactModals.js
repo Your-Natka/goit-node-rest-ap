@@ -34,7 +34,12 @@ export const addSchema = Joi.object({
   phone: Joi.string().required(),
   favorite: Joi.boolean(),
 });
-
+export const updeteSchema = Joi.object({
+  name: Joi.string(),
+  email: Joi.string(),
+  phone: Joi.string(),
+  favorite: Joi.boolean(),
+});
 export const updFavoriteSchema = Joi.object({
   favorite: Joi.boolean().required(),
 });
