@@ -1,6 +1,6 @@
-import { Contact } from "../models/contactModals.js";
-import HttpError from "../helpers/HttpError.js";
-import catchAcync from "../helpers/catchAsync.js";
+import { Contact } from '../models/contactModals.js';
+import HttpError from '../helpers/HttpError.js';
+import catchAcync from '../helpers/catchAsync.js';
 
 export const addContact = catchAcync(async (req, res) => {
   const { _id } = req.user;
@@ -11,8 +11,8 @@ export const addContact = catchAcync(async (req, res) => {
 
 export const getById = catchAcync(async (req, res) => {
   const { id } = req.params;
-  const result = await Contact.findOne({ _id: id });
-  if (!result) throw HttpError(404, "Not found");
+  const result = await Contact.findOne({ _id: id, owner: req.user._id });
+  if (!result) throw HttpError(404, 'Not found');
 
   res.json(result);
 });
@@ -23,12 +23,12 @@ export const listContacts = catchAcync(async (req, res) => {
   res.json(result);
 });
 
-export const removeContact = catchAcync(async (req, res, next) => {
+export const removeContact = catchAcync(async (req, res) => {
   const { contactId } = req.params;
-  const result = await Contact.findOneAndDelete({ _id: contactId });
+  const result = await Contact.findOneAndDelete({ _id: id, owner: req.user._id });
   console.log(result);
   if (!result) {
-    throw HttpError(404, "Not found");
+    throw HttpError(404, 'Not found');
   }
   res.status(200).json(result);
 });
@@ -36,29 +36,17 @@ export const removeContact = catchAcync(async (req, res, next) => {
 export const updateContact = catchAcync(async (req, res) => {
   const { contactId } = req.params;
   const { _id: owner } = req.user;
-  const result = await Contact.findOneAndUpdate(
-    { _id: contactId },
-    { $set: req.body },
-    {
-      new: true,
-    }
-  );
-  if (!result) throw HttpError(404, "Not found");
+  const result = await Contact.findOneAndUpdate({ _id: id, owner: req.user._id });
+  if (!result) throw HttpError(404, 'Not found');
 
   res.status(201).json(result);
 });
 
 export const updateFavorite = catchAcync(async (req, res) => {
   const { contactId } = req.params;
-  if (!req.body) throw HttpError(400, "missing field favorite");
-  const result = await Contact.findByIdAndUpdate(
-    { _id: contactId },
-    { $set: req.body },
-    {
-      new: true,
-    }
-  );
-  if (!result) throw HttpError(404, "Not found");
+  if (!req.body) throw HttpError(400, 'missing field favorite');
+  const result = await Contact.findByIdAndUpdate({ _id: id, owner: req.user._id });
+  if (!result) throw HttpError(404, 'Not found');
 
   res.status(201).json(result);
 });
