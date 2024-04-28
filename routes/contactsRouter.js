@@ -16,9 +16,9 @@ const contactsRouter = express.Router();
 
 contactsRouter.get("/", authenticate, listContacts);
 
-contactsRouter.get("/:contactId", authenticate, isValidId, getById);
+contactsRouter.get("/:id", authenticate, isValidId, getById);
 
-contactsRouter.delete("/:contactId", authenticate, isValidId, removeContact);
+contactsRouter.delete("/:id", authenticate, isValidId, removeContact);
 
 contactsRouter.post("/", authenticate, validateBody(addSchema), addContact);
 
