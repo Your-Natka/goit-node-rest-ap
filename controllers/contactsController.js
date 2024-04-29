@@ -44,8 +44,11 @@ export const updateContact = catchAcync(async (req, res) => {
 
 export const updateFavorite = catchAcync(async (req, res) => {
   const { contactId } = req.params;
+  const favorite = req.body;
   if (!req.body) throw HttpError(400, 'missing field favorite');
-  const result = await Contact.findByIdAndUpdate({ _id: contactId, owner });
+  const result = await Contact.findByIdAndUpdate({ _id: contactId, owner: req.body._id }, favorite, {
+    new: true,
+  });
   if (!result) throw HttpError(404, 'Not found');
 
   res.status(201).json(result);
