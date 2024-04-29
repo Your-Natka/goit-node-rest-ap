@@ -25,7 +25,9 @@ export const listContacts = catchAcync(async (req, res) => {
 
 export const removeContact = catchAcync(async (req, res) => {
   const { contactId } = req.params;
-  const result = await Contact.findOneAndDelete({ _id: contactId, owner: req.user._id });
+  const { _id: owner } = req.user;
+  const { name, email, phone, favorite } = req.body;
+  const result = await Contact.findOneAndDelete({ _id: contactId, owner }, { name, email, phone, favorite });
   console.log(result);
   if (!result) {
     throw HttpError(404, 'Not found');
