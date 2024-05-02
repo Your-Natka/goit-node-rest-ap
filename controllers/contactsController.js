@@ -29,7 +29,7 @@ export const removeContact = catchAcync(async (req, res) => {
   if (!result) {
     throw HttpError(404, 'Not found');
   }
-  res.status(200).json(result);
+  res.status(200).json();
 });
 
 export const createContact = catchAcync(async (req, res) => {

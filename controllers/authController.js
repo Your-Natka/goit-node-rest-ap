@@ -3,32 +3,29 @@ import jwt from 'jsonwebtoken';
 import HttpError from '../helpers/HttpError.js';
 import { User } from '../models/user.js';
 import catchAcync from '../helpers/catchAsync.js';
-import { updateAvatarService } from '../servis/userServis.js';
 
 const { SECRET_KEY } = process.env;
 
-export const updAvatar = catchAcync(async (req, res) => {
-  const updatedUser = await updateAvatarService(req.body, req.user, req.file);
-  res.status(200).json({
-    user: updatedUser,
-  });
-});
-
 export const register = catchAcync(async (req, res) => {
-  const { email } = req.body;
-  const checkImail = await User.findOne({ email });
-  if (checkImail) {
+  const { email, password, subscription } = req.body;
+  const user = await User.findOne({ email });
+  if (user) {
     throw HttpError(409, 'Email in use');
   }
+
+  const salt = await bcrypt.genSalt(10);
+  const passwordHash = await bcrypt.hash(password, salt);
+
   const newUser = await User.create({
-    ...req.body,
+    email,
+    password: passwordHash,
+    subscription,
   });
 
   res.status(201).json({
     user: {
       email: newUser.email,
       subscription: newUser.subscription,
-      avatarURL: newUser.avatarURL,
     },
   });
 });
