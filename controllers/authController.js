@@ -6,20 +6,21 @@ import catchAcync from '../helpers/catchAsync.js';
 
 const { SECRET_KEY } = process.env;
 
+export const updAvatar = catchAcync(async (req, res) => {
+  const updatedUser = await updateAvatarService(req.body, req.user, req.file);
+  res.status(200).json({
+    user: updatedUser,
+  });
+});
+
 export const register = catchAcync(async (req, res) => {
-  const { email, password, subscription } = req.body;
-  const user = await User.findOne({ email });
-  if (user) {
+  const { email } = req.body;
+  const checkImail = await User.findOne({ email });
+  if (checkImail) {
     throw HttpError(409, 'Email in use');
   }
-
-  const salt = await bcrypt.genSalt(10);
-  const passwordHash = await bcrypt.hash(password, salt);
-
   const newUser = await User.create({
-    email,
-    password: passwordHash,
-    subscription,
+    ...req.body,
   });
 
   res.status(201).json({
