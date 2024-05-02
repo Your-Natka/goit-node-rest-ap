@@ -1,8 +1,9 @@
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import HttpError from '../helpers/HttpError.js';
 import { User } from '../models/user.js';
 import catchAcync from '../helpers/catchAsync.js';
+import bcrypt from 'bcrypt';
+import { updateAvatarService } from '../servis/userServis.js';
 
 const { SECRET_KEY } = process.env;
 
@@ -27,6 +28,7 @@ export const register = catchAcync(async (req, res) => {
     user: {
       email: newUser.email,
       subscription: newUser.subscription,
+      avatarURL: newUser.avatarURL,
     },
   });
 });
