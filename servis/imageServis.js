@@ -3,7 +3,7 @@ import Jimp from 'jimp';
 import path from 'path';
 import { v4 } from 'uuid';
 import * as fse from 'fs-extra';
-
+import { promises as fs } from 'fs';
 import HttpError from '../helpers/HttpError.js';
 
 export class ImageService {

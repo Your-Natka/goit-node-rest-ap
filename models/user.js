@@ -81,6 +81,7 @@ userSchema.pre('save', async function (next) {
 
   next();
 });
+
 userSchema.post('save', handleMongooseError);
 
 export const User = model('user', userSchema);
