@@ -10,7 +10,7 @@ const { SECRET_KEY } = process.env;
 export const updAvatar = catchAcync(async (req, res) => {
   const updatedUser = await updateAvatarService(req.body, req.user, req.file);
   res.status(200).json({
-    user: updatedUser,
+    avatarURL: updatedUser.avatarURL,
   });
 });
 

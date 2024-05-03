@@ -16,7 +16,6 @@ export const userSchema = new Schema(
       type: String,
       match: EMAIL_REGEX,
       required: [true, 'Email is required'],
-      unique: true,
     },
     password: {
       type: String,
