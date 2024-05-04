@@ -54,7 +54,9 @@ export const updateAvatar = catchAsync(async (req, res) => {
 
 export const resendEmail = catchAsync(async (req, res) => {
   const { email } = req.body;
+
   const user = await User.findOne({ email });
+
   if (!user) throw new HttpError(404, 'User not found');
   if (user.verify) throw new HttpError(400, 'Verification has already been passed');
 
