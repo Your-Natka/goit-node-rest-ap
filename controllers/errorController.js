@@ -4,6 +4,7 @@ export const globalErrorHandler = (err, req, res, next) => {
       msg: !err.status || err.status === 500 ? 'Internal server error' : err.message,
     });
   }
+
   res.status(err.status ?? 500).json({
     msg: err.message,
     data: err.data,
