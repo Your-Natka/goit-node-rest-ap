@@ -1,22 +1,37 @@
 import express from 'express';
-import { authenticate } from '../middlewares/authenticate.js';
-import { validateBody } from '../middlewares/validateBody.js';
-import { addSchema, updeteSchema, updFavoriteSchema } from '../models/contactModals.js';
-import { listContacts, getById, removeContact, addContact, updateContact, updateFavorite } from '../controllers/contactsController.js';
-import isValidId from '../middlewares/isValidId.js';
 
-const contactsRouter = express.Router();
+import {
+  createContact,
+  deleteContact,
+  getAllContacts,
+  getOneContact,
+  updateContact,
+  updateStatus,
+} from '../controllers/contactsControllers.js';
 
-contactsRouter.get('/', authenticate, listContacts);
+import {
+  checkCreateUserData,
+  checkFavorite,
+  checkUpdateUserData,
+  checkUserId,
+} from '../middlewares/userMiddlewares.js';
 
-contactsRouter.get('/:id', authenticate, isValidId, getById);
+import { protect } from '../middlewares/authMiddlewares.js';
 
-contactsRouter.delete('/:id', authenticate, isValidId, removeContact);
+const router = express.Router();
 
-contactsRouter.post('/', authenticate, validateBody(addSchema), addContact);
+router.use(protect);
+router.get('/', getAllContacts);
 
-contactsRouter.put('/:id', authenticate, isValidId, validateBody(updeteSchema), updateContact);
+router.use('/:id', checkUserId);
+router
+  .route('/:id')
+  .get(getOneContact)
+  .delete(deleteContact)
+  .put(checkUpdateUserData, updateContact);
 
-contactsRouter.patch('/:id/favorite', authenticate, isValidId, validateBody(updFavoriteSchema), updateFavorite);
+router.post('/', checkCreateUserData, createContact);
 
-export default contactsRouter;
+router.patch('/:id/favorite', checkFavorite, updateStatus);
+
+export { router };

@@ -1,36 +1,38 @@
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 
-import contactsRouter from './routes/contactsRouter.js';
-import authRouter from './routes/authRouter.js';
-dotenv.config();
+import { router as contactsRouter } from './routes/contactsRouter.js';
+import { router as usersRouter } from './routes/userRouter.js';
+import { globalErrorHandler } from './controllers/errorController.js';
+import { DEV } from './constants/const.js';
 
 const app = express();
-
-const { NODE_MONGOOSE, PORT } = process.env;
-
-mongoose.set('strictQuery', true);
+dotenv.config();
 mongoose
-  .connect(NODE_MONGOOSE)
-  .then(() => {
-    console.log('Database connection successful.');
-    console.log(`port: ${PORT}`);
-  })
+  .connect(process.env.DB_HOST)
+  .then(() => console.log('Database connection successful'))
   .catch(error => {
-    console.log(error);
-    process.exit(1);
+    console.log(error.message);
+    process.exit(1); // вихід з програми
   });
 
-app.use(morgan('tiny'));
+if (process.env.NODE_ENV === DEV) app.use(morgan('dev'));
+else app.use(morgan('tiny'));
+
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-app.use('/users', authRouter);
-app.use('/api/contacts', contactsRouter);
+const pathPrefix = '/api';
+
+app.use('/users', usersRouter);
+
+app.use(`${pathPrefix}/contacts`, contactsRouter);
+
+app.use(globalErrorHandler);
 
 app.use((_, res) => {
   res.status(404).json({ message: 'Route not found' });
@@ -42,6 +44,7 @@ app.use((err, req, res, next) => {
 });
 
 const port = +process.env.PORT;
+
 app.listen(port, () => {
   console.log(`Server is running. Use our API on port: ${port}`);
 });
