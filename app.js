@@ -16,7 +16,7 @@ mongoose
   .then(() => console.log('Database connection successful'))
   .catch(error => {
     console.log(error.message);
-    process.exit(1); // вихід з програми
+    process.exit(1);
   });
 
 if (process.env.NODE_ENV === DEV) app.use(morgan('dev'));
