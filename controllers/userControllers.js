@@ -58,6 +58,7 @@ export const resendEmail = catchAsync(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (!user) throw new HttpError(404, 'User not found');
+
   if (user.verify) throw new HttpError(400, 'Verification has already been passed');
 
   const emailSend = await sendEmail(email, user.verificationToken);

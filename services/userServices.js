@@ -52,6 +52,8 @@ export const checkUser = async data => {
 
   if (!isValidPassword) throw new HttpError(401, 'Email or password is wrong');
 
+  if (!user.verify) throw new HttpError(401, 'Please verify your email');
+
   const token = createToken(user._id);
 
   const userUpdate = await User.findOneAndUpdate(user._id, { token }, { new: true });
