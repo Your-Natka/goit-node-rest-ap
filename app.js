@@ -6,7 +6,6 @@ import mongoose from 'mongoose';
 
 import { router as contactsRouter } from './routes/contactsRouter.js';
 import { router as usersRouter } from './routes/userRouter.js';
-import { globalErrorHandler } from './controllers/errorController.js';
 import { DEV } from './constants/const.js';
 
 const app = express();
@@ -31,8 +30,6 @@ const pathPrefix = '/api';
 app.use('/users', usersRouter);
 
 app.use(`${pathPrefix}/contacts`, contactsRouter);
-
-app.use(globalErrorHandler);
 
 app.use((_, res) => {
   res.status(404).json({ message: 'Route not found' });
