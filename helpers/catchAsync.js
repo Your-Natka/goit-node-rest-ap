@@ -1,3 +1,7 @@
 export const catchAsync = fn => (req, res, next) => {
-  fn(req, res, next).catch(err => next(err));
+  try {
+    fn(req, res, next);
+  } catch (error) {
+    next(error);
+  }
 };
