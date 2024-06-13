@@ -58,19 +58,28 @@ export const updateAvatar = catchAsync(async (req, res) => {
   });
 });
 
-export const resendEmail = catchAsync(async (req, res) => {
+export const resendEmail = catchAsync(async (req, res, next) => {
   const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
 
-  const user = await User.findOne({ email });
+    if (!user) {
+      throw new HttpError(404, 'User not found');
+    }
 
-  if (!user) throw new HttpError(404, 'User not found');
+    if (user.verify) {
+      throw new HttpError(400, 'Verification has already been passed');
+    }
 
-  if (user.verify) throw new HttpError(400, 'Verification has already been passed');
+    const emailSend = await sendEmail(email, user.verificationToken);
 
-  const emailSend = await sendEmail(email, user.verificationToken);
-
-  if (!emailSend) throw new HttpError(500, 'Email not send');
-  res.status(200).json({
-    message: 'Verification email sent',
-  });
+    if (!emailSend) {
+      throw new HttpError(500, 'Email not send');
+    }
+    res.status(200).json({
+      message: 'Verification email sent',
+    });
+  } catch (error) {
+    next(error);
+  }
 });
