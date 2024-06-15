@@ -4,15 +4,21 @@ import { checkUser, register, updateAvatarService } from '../services/userServic
 import HttpError from '../helpers/HttpError.js';
 import { sendEmail } from '../services/emailSeriveces.js';
 
-export const signUp = catchAsync(async (req, res) => {
-  const newUser = await register(req.body);
-
-  res.status(201).json({
-    user: {
-      email: newUser.email,
-      subscription: newUser.subscription,
-    },
-  });
+export const signUp = catchAsync(async (req, res, next) => {
+  try {
+    const newUser = await register(req.body);
+    if (!newUser) {
+      throw HttpError(404, 'Email is already in use');
+    }
+    res.status(201).json({
+      user: {
+        email: newUser.email,
+        subscription: newUser.subscription,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 export const logIn = catchAsync(async (req, res, next) => {
