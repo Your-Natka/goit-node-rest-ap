@@ -4,7 +4,13 @@ import HttpError from '../helpers/HttpError.js';
 
 export const checkEmailVerification = catchAsync((req, res, next) => {
   const { value, errors } = emailSchema(req.body);
-  if (errors) throw new HttpError(400, errors);
-  req.body = value;
-  next();
+  try {
+    if (errors) {
+      throw new HttpError(400, errors);
+    }
+    req.body = value;
+    next();
+  } catch (error) {
+    next(error);
+  }
 });

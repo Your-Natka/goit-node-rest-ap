@@ -7,38 +7,47 @@ import { checkToken } from '../services/jwtServices.js';
 
 export const checkUserSingUp = catchAsync(async (req, res, next) => {
   const { value, error } = signUpSchema(req.body);
+  try {
+    if (error) throw new HttpError(400, error.message);
 
-  if (error) throw new HttpError(400, error.message);
+    const emailCheck = await checkEmail(value.email);
 
-  const emailCheck = await checkEmail(value.email);
+    if (emailCheck) throw new HttpError(409, 'Email in use');
 
-  if (emailCheck) throw new HttpError(409, 'Email in use');
+    req.body = value;
 
-  req.body = value;
-
-  next();
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 export const checkUserLogIn = (req, res, next) => {
   const { value, error } = loginSchema(req.body);
+  try {
+    if (error) throw new HttpError(400, error.message);
 
-  if (error) throw new HttpError(400, error.message);
-
-  req.body = value;
-  next();
+    req.body = value;
+    next();
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const protect = catchAsync(async (req, res, next) => {
   const token = req.headers.authorization ? req.headers.authorization.split(' ')[1] : null;
+  try {
+    if (!token) throw new HttpError(401);
 
-  if (!token) throw new HttpError(401);
+    const id = checkToken(token);
+    const user = await User.findById(id);
 
-  const id = checkToken(token);
-  const user = await User.findById(id);
+    if (!user || !user.token || user.token !== token) throw new HttpError(401);
 
-  if (!user || !user.token || user.token !== token) throw new HttpError(401);
+    req.user = user;
 
-  req.user = user;
-
-  next();
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
