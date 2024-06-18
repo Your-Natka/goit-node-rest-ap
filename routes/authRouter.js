@@ -1,27 +1,27 @@
 import express from 'express';
+import validateBody from '../middlewares/validateBody.js';
+import { loginSchema, registerSchema, verifyEmailSchema } from '../schemas/usersSchemas.js';
 import {
-  current,
-  login,
-  logout,
-  registration,
-  updateAvatar,
-  updateSubscription,
-  verificationToken,
-  verify,
-} from '../controllers/usersControllers.js';
-import { uploadAvatars, verifyToken } from '../helpers/midellwars.js';
-import validateBody from '../helpers/validateBody.js';
-import { updateSubscriptionSchema, usersSchema } from '../schemas/contactsSchemas.js';
+  getCurrentUser,
+  loginUser,
+  registerUser,
+  logoutUser,
+  uploadUserAvatar,
+  verifyUser,
+  verifyNewEmailSend,
+} from '../controllers/authControllers.js';
+import { protect } from '../middlewares/authMiddlewares.js';
+import { uploadAvatar } from '../middlewares/userMiddlewares.js';
 
-const usersRouter = express.Router();
+const authRouter = express.Router();
 
-usersRouter.post('/register', validateBody(usersSchema), registration);
-usersRouter.post('/login', validateBody(usersSchema), login);
-usersRouter.get('/verify/:verificationToken', verificationToken);
-usersRouter.post('/verify', verify);
-usersRouter.post('/logout', verifyToken, logout);
-usersRouter.get('/current', verifyToken, current);
-usersRouter.patch('/', validateBody(updateSubscriptionSchema), verifyToken, updateSubscription);
-usersRouter.patch('/avatars', verifyToken, uploadAvatars, updateAvatar);
+authRouter.post('/register', validateBody(registerSchema), registerUser);
+authRouter.post('/login', validateBody(loginSchema), loginUser);
+authRouter.post('/logout', protect, logoutUser);
+authRouter.get('/current', protect, getCurrentUser);
+authRouter.patch('/avatars', protect, uploadAvatar, uploadUserAvatar);
 
-export default usersRouter;
+authRouter.get('/verify/:verificationToken', verifyUser);
+authRouter.post('/verify/', validateBody(verifyEmailSchema), verifyNewEmailSend);
+
+export default authRouter;

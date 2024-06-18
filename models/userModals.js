@@ -1,16 +1,37 @@
-import express from 'express';
-import validateBody from '../middlewares/validateBody.js';
-import { loginSchema, registerSchema } from '../schemas/usersSchemas.js';
-import { getCurrentUser, loginUser, registerUser, logoutUser, uploadUserAvatar } from '../controllers/authControllers.js';
-import { protect } from '../middlewares/authMiddlewares.js';
-import { uploadAvatar } from '../middlewares/userMiddlewares.js';
+import { model, Schema } from 'mongoose';
+import { userRoles } from '../constants/userRoles.js';
 
-const authRouter = express.Router();
+const userSchema = new Schema(
+  {
+    password: {
+      type: String,
+      required: [true, 'Password is required'],
+    },
+    email: {
+      type: String,
+      required: [true, 'Email is required'],
+      unique: true,
+    },
+    subscription: {
+      type: String,
+      enum: Object.values(userRoles),
+      default: userRoles.STARTER,
+    },
+    token: {
+      type: String,
+      default: null,
+    },
+    avatarURL: String,
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, 'Verify token is required'],
+    },
+  },
+  { versionKey: false }
+);
 
-authRouter.post('/register', validateBody(registerSchema), registerUser);
-authRouter.post('/login', validateBody(loginSchema), loginUser);
-authRouter.post('/logout', protect, logoutUser);
-authRouter.get('/current', protect, getCurrentUser);
-authRouter.patch('/avatars', protect, uploadAvatar, uploadUserAvatar);
-
-export default authRouter;
+export const User = model('user', userSchema);

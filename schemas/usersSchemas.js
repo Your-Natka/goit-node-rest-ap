@@ -19,3 +19,9 @@ export const loginSchema = Joi.object({
     .required(),
   password: Joi.string().min(7).max(50).required(),
 });
+
+export const verifyEmailSchema = Joi.object({
+  email: Joi.string().email().required().messages({
+    message: 'missing required field email',
+  }),
+});

@@ -34,7 +34,7 @@ module.exports = {
     indent: ['warn', 2, { SwitchCase: 1 }],
     'linebreak-style': 'off',
     'max-classes-per-file': 'off',
-    'newline-per-chained-call': ['error', { ignoreChainWithDepth: 5 }],
+    'newline-per-chained-call': 'error',
     'new-parens': 'error',
     'no-alert': 'error',
     'no-duplicate-imports': 'error',
@@ -128,7 +128,7 @@ module.exports = {
     'space-before-function-paren': [
       'error',
       {
-        anonymous: 'always',
+        anonymous: 'never',
         asyncArrow: 'always',
         named: 'never',
       },
